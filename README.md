@@ -7,7 +7,7 @@ built on open-access data from PhysioNet's EEG Motor Movement/Imagery Database
 ## Why this project exists
 
 This is the first hands-on technical building block toward **SynapseArt** (EEG
-signal processing → generative art, one of the [Synaptica](../Synaptica_Project_Description.md.pdf)
+signal processing → generative art, one of the Synaptica ecosystem's
 sub-projects) and toward the **Frequency Generator**'s eventual need to *validate*
 that a given frequency protocol actually changes measurable brain activity. Both
 of those currently exist as concepts; this repo is a real, working, versioned
