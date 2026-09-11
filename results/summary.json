@@ -1,0 +1,26 @@
+{
+  "subjects": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "n_epochs": 225,
+  "n_channels": 5,
+  "channels": [
+    "C3",
+    "C1",
+    "Cz",
+    "C2",
+    "C4"
+  ],
+  "class_balance": {
+    "left_fist": 113,
+    "right_fist": 112
+  },
+  "accuracy": {
+    "LDA": 0.52,
+    "Linear SVM": 0.48444444444444446
+  }
+}
