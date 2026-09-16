@@ -27,6 +27,13 @@ It doubles as a portfolio piece for two audiences at once:
 
 ## What it does
 
+There are two pipelines, v1 and v2, kept side by side deliberately — the
+repo's history is itself part of the portfolio value: a real result, an
+honest diagnosis of its weakness, and a follow-up that specifically targets
+that weakness and reports what happened.
+
+**v1 — band-power baseline** (chance-level result; establishes the pipeline
+and the honest-reporting standard for everything after it)
 1. **Download** — pulls open, license-free EEG recordings directly from
    PhysioNet (no account needed) for one or more subjects performing *imagined*
    left-fist / right-fist motor movement. ([`src/download_data.py`](src/download_data.py))
@@ -41,12 +48,30 @@ It doubles as a portfolio piece for two audiences at once:
 5. **Report** — saves PSD plots, confusion matrices, and an accuracy summary to
    `results/`. ([`src/pipeline.py`](src/pipeline.py))
 
+**v2 — Common Spatial Patterns (CSP), from scratch** (fixes the v1 weakness;
+adds a second condition and real statistics)
+1. **CSP feature extraction**, implemented from the generalized-eigenvalue
+   formulation (no MNE dependency) — finds spatial filters that maximize the
+   variance ratio between left- and right-fist trials across all 64 channels,
+   with the fit correctly nested inside each cross-validation fold to avoid
+   label leakage. ([`src/csp.py`](src/csp.py), [`src/classify_csp.py`](src/classify_csp.py))
+2. **Two conditions, same subjects** — runs both *imagined* and *executed*
+   movement through the identical pipeline and statistically compares them
+   (Wilcoxon signed-rank, paired by subject). ([`src/pipeline_v2.py`](src/pipeline_v2.py))
+3. **Per-decode significance** — exact binomial test against chance for every
+   subject/condition result, not just an accuracy number.
+4. **Spatial pattern visualization** — plots which electrodes each CSP filter
+   actually weights, on a schematic scalp layout derived from the standard
+   10-10 electrode naming convention. ([`src/layout.py`](src/layout.py))
+
 ## Running it
 
 ```bash
 python3 -m venv .venv
 ./.venv/bin/pip install -r requirements.txt
-./.venv/bin/python -m src.pipeline 1 2 3 4 5   # subject IDs to download + analyze
+
+./.venv/bin/python -m src.pipeline 1 2 3 4 5              # v1: band power
+./.venv/bin/python -m src.pipeline_v2 1 2 3 4 5 6 7 8 9 10 # v2: CSP, both conditions
 ```
 
 Data is cached in `data/` after the first download (not committed to git — see
@@ -55,13 +80,18 @@ public dataset).
 
 ## Results (current)
 
-See [`results/REPORT.md`](results/REPORT.md) for the full write-up. Short
-version: pooled cross-subject decoding sits at chance (~50%), and so does naive
-per-subject decoding with this simple feature set — an honest, expected result
-given the known difficulty of *imagined* (vs. executed) movement and the
-limitations of raw band-power features without spatial filtering. The report
-lays out exactly what the standard next step (Common Spatial Patterns) is and
-why it should help.
+**v1** ([`results/REPORT.md`](results/REPORT.md)): pooled and per-subject
+decoding both sat at chance (~50%) with simple band-power features — an
+honest null result that pointed straight at CSP as the fix.
+
+**v2** ([`results/v2/REPORT_v2.md`](results/v2/REPORT_v2.md)): CSP lifts mean
+per-subject accuracy to **64%** (imagined and executed, 10 subjects), with
+individual subjects reaching **95.6%** (p < 0.0001) — confirming the v1
+feature-set diagnosis was correct. Accuracy varies widely by subject (40–96%),
+consistent with the well-documented "BCI illiteracy" phenomenon in the BCI
+literature. Imagined vs. executed movement showed no significant difference
+on this sample (Wilcoxon p=1.0, n=10 subjects) — a genuinely open question the
+report discusses rather than glosses over.
 
 ## Data source & citation
 
@@ -76,17 +106,17 @@ Circulation 101(23):e215-e220, 2000.
 
 ## Next steps
 
-- [ ] Add Common Spatial Patterns (CSP) spatial filtering before feature
-      extraction — the standard fix for the weak band-power baseline seen here.
-- [ ] Compare *executed* movement runs (R03/R07/R11) against *imagined* runs to
-      quantify the imagery-vs-execution gap directly, on this same dataset.
-- [ ] Try a per-subject-normalized pooled model (z-score features within
-      subject before pooling) as a cheaper alternative to full per-subject models.
-- [ ] Once the classification baseline is solid, start the actual SynapseArt
-      fork: map band-power feature vectors to generative visual/audio parameters
-      instead of a class label.
+v1's next steps (CSP, imagined-vs-executed comparison) are done in v2. What's
+still open, in priority order — see [`results/v2/REPORT_v2.md`](results/v2/REPORT_v2.md#next-steps)
+for the full reasoning:
+
+- [ ] Scale to more of the 109 available EEGMMIDB subjects to get a real
+      estimate of the "BCI illiteracy" rate instead of an n=10 sketch of it.
+- [ ] Per-subject CSP component-count tuning, nested inside cross-validation.
+- [ ] Add an artifact-rejection step (EOG regression or ICA).
+- [ ] Fork into the actual SynapseArt prototype: replace the classifier step
+      with a mapping from CSP features to generative visual/audio parameters.
 - [ ] Swap in a mental-wellness-relevant public dataset (e.g. a stress/affect
-      EEG or peripheral-physiology dataset) once this pipeline is validated on a
-      clean, well-studied benchmark — ties the same pipeline directly back to
-      Synaptica's mental-wellness mission and the Frequency Generator's
-      validation needs.
+      EEG or peripheral-physiology dataset) once the pipeline is validated on a
+      clean, well-studied benchmark — ties this directly back to Synaptica's
+      mental-wellness mission and the Frequency Generator's validation needs.

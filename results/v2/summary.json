@@ -1,0 +1,268 @@
+{
+  "subjects": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "n_components": 6,
+  "results": {
+    "imagined": {
+      "1": {
+        "LDA": {
+          "accuracy": 0.7111,
+          "p_value": 0.00661,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.7333,
+          "p_value": 0.00246,
+          "n_epochs": 45
+        }
+      },
+      "2": {
+        "LDA": {
+          "accuracy": 0.9111,
+          "p_value": 0.0,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.8667,
+          "p_value": 0.0,
+          "n_epochs": 45
+        }
+      },
+      "3": {
+        "LDA": {
+          "accuracy": 0.6,
+          "p_value": 0.23269,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.6444,
+          "p_value": 0.07245,
+          "n_epochs": 45
+        }
+      },
+      "4": {
+        "LDA": {
+          "accuracy": 0.6,
+          "p_value": 0.23269,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.5556,
+          "p_value": 0.55148,
+          "n_epochs": 45
+        }
+      },
+      "5": {
+        "LDA": {
+          "accuracy": 0.4667,
+          "p_value": 0.76599,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.5111,
+          "p_value": 1.0,
+          "n_epochs": 45
+        }
+      },
+      "6": {
+        "LDA": {
+          "accuracy": 0.4889,
+          "p_value": 1.0,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.4444,
+          "p_value": 0.55148,
+          "n_epochs": 45
+        }
+      },
+      "7": {
+        "LDA": {
+          "accuracy": 0.9556,
+          "p_value": 0.0,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.9556,
+          "p_value": 0.0,
+          "n_epochs": 45
+        }
+      },
+      "8": {
+        "LDA": {
+          "accuracy": 0.6444,
+          "p_value": 0.07245,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.6,
+          "p_value": 0.23269,
+          "n_epochs": 45
+        }
+      },
+      "9": {
+        "LDA": {
+          "accuracy": 0.4444,
+          "p_value": 0.55148,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.4222,
+          "p_value": 0.3713,
+          "n_epochs": 45
+        }
+      },
+      "10": {
+        "LDA": {
+          "accuracy": 0.6,
+          "p_value": 0.23269,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.6222,
+          "p_value": 0.13516,
+          "n_epochs": 45
+        }
+      }
+    },
+    "executed": {
+      "1": {
+        "LDA": {
+          "accuracy": 0.6444,
+          "p_value": 0.07245,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.6444,
+          "p_value": 0.07245,
+          "n_epochs": 45
+        }
+      },
+      "2": {
+        "LDA": {
+          "accuracy": 0.6222,
+          "p_value": 0.13516,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.6222,
+          "p_value": 0.13516,
+          "n_epochs": 45
+        }
+      },
+      "3": {
+        "LDA": {
+          "accuracy": 0.6,
+          "p_value": 0.23269,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.6444,
+          "p_value": 0.07245,
+          "n_epochs": 45
+        }
+      },
+      "4": {
+        "LDA": {
+          "accuracy": 0.6,
+          "p_value": 0.23269,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.6667,
+          "p_value": 0.0357,
+          "n_epochs": 45
+        }
+      },
+      "5": {
+        "LDA": {
+          "accuracy": 0.6222,
+          "p_value": 0.13516,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.6,
+          "p_value": 0.23269,
+          "n_epochs": 45
+        }
+      },
+      "6": {
+        "LDA": {
+          "accuracy": 0.4,
+          "p_value": 0.23269,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.4444,
+          "p_value": 0.55148,
+          "n_epochs": 45
+        }
+      },
+      "7": {
+        "LDA": {
+          "accuracy": 0.9556,
+          "p_value": 0.0,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.9333,
+          "p_value": 0.0,
+          "n_epochs": 45
+        }
+      },
+      "8": {
+        "LDA": {
+          "accuracy": 0.4667,
+          "p_value": 0.76599,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.5111,
+          "p_value": 1.0,
+          "n_epochs": 45
+        }
+      },
+      "9": {
+        "LDA": {
+          "accuracy": 0.5333,
+          "p_value": 0.76599,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.5333,
+          "p_value": 0.76599,
+          "n_epochs": 45
+        }
+      },
+      "10": {
+        "LDA": {
+          "accuracy": 0.9556,
+          "p_value": 0.0,
+          "n_epochs": 45
+        },
+        "Linear SVM": {
+          "accuracy": 0.9333,
+          "p_value": 0.0,
+          "n_epochs": 45
+        }
+      }
+    }
+  },
+  "paired_comparison": {
+    "mean_imagined_lda_acc": 0.6422,
+    "mean_executed_lda_acc": 0.64,
+    "wilcoxon_statistic": 14.0,
+    "wilcoxon_p_value": 1.0
+  },
+  "best_case": "S007_imagined"
+}

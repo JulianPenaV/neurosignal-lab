@@ -23,8 +23,17 @@ FS = 160.0  # Hz, fixed by the EEGMMIDB recording hardware
 LOWCUT, HIGHCUT = 8.0, 30.0
 EPOCH_START, EPOCH_END = 0.5, 3.5  # seconds relative to cue onset
 
-LABEL_MAP = {"T1": 0, "T2": 1}  # T1 = left fist imagery, T2 = right fist imagery
+LABEL_MAP = {"T1": 0, "T2": 1}  # T1 = left fist (imagined or executed), T2 = right fist
 CLASS_NAMES = ["left_fist", "right_fist"]
+
+# Full 64-channel BCI2000 montage, in the order EEGMMIDB stores them.
+ALL_CHANNELS = [
+    "Fc5", "Fc3", "Fc1", "Fcz", "Fc2", "Fc4", "Fc6", "C5", "C3", "C1", "Cz", "C2",
+    "C4", "C6", "Cp5", "Cp3", "Cp1", "Cpz", "Cp2", "Cp4", "Cp6", "Fp1", "Fpz", "Fp2",
+    "Af7", "Af3", "Afz", "Af4", "Af8", "F7", "F5", "F3", "F1", "Fz", "F2", "F4", "F6",
+    "F8", "Ft7", "Ft8", "T7", "T8", "T9", "T10", "Tp7", "Tp8", "P7", "P5", "P3", "P1",
+    "Pz", "P2", "P4", "P6", "P8", "Po7", "Po3", "Poz", "Po4", "Po8", "O1", "Oz", "O2", "Iz",
+]
 
 
 def bandpass_filter(data: np.ndarray, fs: float = FS, low=LOWCUT, high=HIGHCUT, order=4):
@@ -51,12 +60,17 @@ def load_raw(edf_path: str):
 def epoch_recording(edf_path: str, channels=("C3", "C1", "Cz", "C2", "C4")):
     """
     Load one EDF run, band-pass filter, and slice into (n_epochs, n_channels, n_times)
-    labeled epochs for the T1/T2 imagery cues.
+    labeled epochs for the T1/T2 cues (left vs. right fist, imagined or executed
+    depending on which run was loaded).
+
+    channels=None uses the full 64-channel montage (needed for CSP, which relies
+    on having enough channels to find a good spatial filter).
     """
     signals, ch_labels, annotations = load_raw(edf_path)
     filtered = bandpass_filter(signals, FS)
 
-    ch_idx = [ch_labels.index(c) for c in channels]
+    use_channels = list(ch_labels) if channels is None else list(channels)
+    ch_idx = [ch_labels.index(c) for c in use_channels]
 
     epochs, labels = [], []
     for onset, _duration, desc in annotations:
@@ -69,14 +83,14 @@ def epoch_recording(edf_path: str, channels=("C3", "C1", "Cz", "C2", "C4")):
         epochs.append(filtered[np.ix_(ch_idx, range(start, end))])
         labels.append(LABEL_MAP[desc])
 
-    return np.array(epochs), np.array(labels), list(channels)
+    return np.array(epochs), np.array(labels), use_channels
 
 
 def epoch_dataset(edf_paths, channels=("C3", "C1", "Cz", "C2", "C4")):
-    """Epoch and concatenate multiple runs (e.g. all imagery runs for one subject)."""
-    all_epochs, all_labels = [], []
+    """Epoch and concatenate multiple runs (e.g. all runs of one condition for one subject)."""
+    all_epochs, all_labels, ch_names = [], [], None
     for path in edf_paths:
         epochs, labels, ch_names = epoch_recording(path, channels)
         all_epochs.append(epochs)
         all_labels.append(labels)
-    return np.concatenate(all_epochs, axis=0), np.concatenate(all_labels, axis=0), list(channels)
+    return np.concatenate(all_epochs, axis=0), np.concatenate(all_labels, axis=0), ch_names
